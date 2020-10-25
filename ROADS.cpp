@@ -45,8 +45,8 @@ void reset()
 
 int main()
 {
-    freopen("D:\\test.txt", "r", stdin);
-    freopen("D:\\test2.txt", "w", stdout);
+    //freopen("D:\\test.txt", "r", stdin);
+    //freopen("D:\\test2.txt", "w", stdout);
     scanf("%d", &t);
     int u, v, lt, ct;
     while(t--)
