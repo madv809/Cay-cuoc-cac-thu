@@ -48,8 +48,8 @@ void go (int u)
 
 int main()
 {
-    freopen("D:\\test.txt", "r", stdin);
-    freopen("D:\\test2.txt", "w", stdout);
+    //freopen("D:\\test.txt", "r", stdin);
+    //freopen("D:\\test2.txt", "w", stdout);
     scanf("%d", &n);
     int u, v, m;
     while (scanf("%d", &u) > 0)
