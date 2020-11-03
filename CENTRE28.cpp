@@ -14,13 +14,14 @@
 
 using namespace std;
 int q[30001], s[30001], n, m;
-vector <int> a[30001], c[30001];
+vector <int> a[30001];
+vector <LL> c[30001];
 LL d1[30001], d2[30001], f1[30001], f2[30001];
 bool inq[30001];
 
 void BF (LL d[], LL f[], int s)
 {
-    REP(i, 1, n) d[i] = 9999999999999;
+    REP(i, 1, n) d[i] = 999999999;
     memset(inq, 0, sizeof(inq));
 
     q[0] = s;
@@ -39,9 +40,9 @@ void BF (LL d[], LL f[], int s)
         {
             int v = a[u][i];
 
-            if (d[v] > d[u] + (LL)(c[u][i]))
+            if (d[v] > d[u] + c[u][i])
             {
-                d[v] = d[u] + (LL)(c[u][i]);
+                d[v] = d[u] + c[u][i];
                 f[v] = f[u];
                 if (!inq[v])
                 {
@@ -50,7 +51,7 @@ void BF (LL d[], LL f[], int s)
                     inq[v] = 1;
                 }
             }
-            else if (d[v] == d[u] + (LL)(c[u][i]))
+            else if (d[v] == d[u] + c[u][i])
                 f[v] += f[u];
         }
     }
@@ -61,10 +62,10 @@ int main()
     //freopen("D:\\test.txt", "r", stdin);
     //freopen("D:\\test2.txt", "w", stdout);
     scanf("%d%d", &n, &m);
-    int u, v, w;
+    int u, v; LL w;
     REP(i, 1, m)
     {
-        scanf("%d%d%d", &u, &v, &w);
+        scanf("%d%d%lli", &u, &v, &w);
         a[u].push_back(v);
         a[v].push_back(u);
         c[u].push_back(w);
