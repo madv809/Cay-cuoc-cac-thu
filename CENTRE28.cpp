@@ -25,6 +25,7 @@ void BF (LL d[], LL f[], int s)
 
     q[0] = s;
     d[s] = 0;
+    f[s] = 1;
 
     int x = 0, y = 0;
 
@@ -38,9 +39,9 @@ void BF (LL d[], LL f[], int s)
         {
             int v = a[u][i];
 
-            if (d[v] > d[u] + (LL)c[u][i])
+            if (d[v] > d[u] + (LL)(c[u][i]))
             {
-                d[v] = d[u] + (LL)c[u][i];
+                d[v] = d[u] + (LL)(c[u][i]);
                 f[v] = f[u];
                 if (!inq[v])
                 {
@@ -49,7 +50,7 @@ void BF (LL d[], LL f[], int s)
                     inq[v] = 1;
                 }
             }
-            else if (d[v] == d[u] + (LL)c[u][i])
+            else if (d[v] == d[u] + (LL)(c[u][i]))
                 f[v] += f[u];
         }
     }
@@ -69,20 +70,18 @@ int main()
         c[u].push_back(w);
         c[v].push_back(w);
     }
-
-    f1[1] = f2[n] = 1;
     BF(d1, f1, 1);
     BF(d2, f2, n);
 
     int res = n - 2;
-    REP(i, 2, n) if (d1[i] + d2[i] == d1[n] && f1[i] == f1[n] && i != n)
+    FOR(i, 2, n) if (d1[i] + d2[i] == d1[n] && f1[i]*f2[i] == f1[n])
     {
         --res;
         s[i] = 1;
     }
 
     printf("%d\n", res);
-    REP(i, 2, n) if (!s[i] && i != n) printf("%d\n", i);
+    FOR(i, 2, n) if (!s[i]) printf("%d\n", i);
     /*REP(i, 1, n) cout << d1[i] << ' ';
     cout << endl;
     REP(i, 1, n) cout << d2[i] << ' ';
