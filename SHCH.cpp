@@ -77,6 +77,7 @@ public :
 BigNum operator * (const BigNum &A, const BigNum &B)
 {
     BigNum R;
+    R = 0;
     R.resize(A.n + B.n);
     for (int i = 0; i < A.n; ++i)
         for (int j = 0; j < B.n; ++j) R[i + j] += A[i]*B[j];
@@ -87,7 +88,8 @@ BigNum operator * (const BigNum &A, const BigNum &B)
 BigNum operator * (const BigNum &A, int x)
 {
     BigNum R;
-    R.clear(); R.resize(A.n + 1);
+    R = 0;
+    R.resize(A.n + 1);
     for (int i = 0; i < A.n; ++i) R[i] = A[i]*x;
     R.normalize();
     return R;
@@ -134,9 +136,6 @@ int main()
     cin >> S;
     f[0] = 1;
     REP(i, 1, k) f[i] = f[i - 1]*(n - k + i);
-    //REP(i, 1, k) cout << f[i] << ' ';
-    //cout << S << ' ' << S.n << ' ' << f[0] << ' ' << f[0].n << endl;
-    //cout << (S > f[1]) << endl;
 
     int d = k - 1, c = 0;
     while (1)
