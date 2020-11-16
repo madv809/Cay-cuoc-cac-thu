@@ -7,7 +7,7 @@
 #include <math.h>
 #include <iomanip>
 #include <queue>
-
+ 
 #define LL long long
 #define FOR(i, a, b) for (int i = a; i < b; ++i)
 #define REP(i, a, b) for (int i = a; i <= b; ++i)
@@ -18,14 +18,14 @@
 #define pLi pair<LL, int>
 #define piL pair<int, LL>
 #define pLL pair<LL, LL>
-
+ 
 using namespace std;
 const int BASE = 100000;
 struct BigN
 {
     int n;
     int a[2900];
-
+ 
     void resize (int x) {for (int i = 0; i < x; ++i) a[i] = 0; n = x;}
     void trim() {while (n > 1 && a[n - 1] == 0) --n;}
     void normalize()
@@ -42,7 +42,7 @@ struct BigN
         }
         trim();
     }
-
+ 
     int &operator [] (int i) {return a[i];}
     const int operator [] (int i) const {return a[i];}
     void operator = (int x)
@@ -56,7 +56,7 @@ struct BigN
         for (int i = 0; i < n; ++i) a[i] = A[i];
     }
 };
-
+ 
 BigN operator + (const BigN &A, const BigN &B)
 {
     BigN R;
@@ -66,7 +66,7 @@ BigN operator + (const BigN &A, const BigN &B)
     R.normalize();
     return R;
 }
-
+ 
 BigN operator - (const BigN &A, const BigN &B)
 {
     BigN R;
@@ -76,7 +76,7 @@ BigN operator - (const BigN &A, const BigN &B)
     R.normalize();
     return R;
 }
-
+ 
 BigN operator * (const BigN &A, const BigN &B)
 {
     BigN R;
@@ -92,14 +92,14 @@ BigN operator * (const BigN &A, const BigN &B)
     R.normalize();
     return R;
 }
-
+ 
 bool operator > (const BigN &A, const BigN &B)
 {
     if (A.n != B.n) return (A.n > B.n);
     for (int i = A.n - 1; i >= 0; --i) if (A[i] != B[i]) return (A[i] > B[i]);
     return 0;
 }
-
+ 
 istream &operator >> (istream &cin, BigN &A)
 {
     string s;
@@ -114,14 +114,14 @@ istream &operator >> (istream &cin, BigN &A)
     A.normalize();
     return cin;
 }
-
+ 
 ostream &operator << (ostream &cout, const BigN &A)
 {
     printf("%d", A[A.n - 1]);
     for (int i = A.n - 2; i >= 0; --i) printf("%05d", A[i]);
     return cout;
 }
-
+ 
 int a[301], n, k;
 BigN C[301][301], S;
 bool used[301];
@@ -132,16 +132,13 @@ int main()
     scanf("%d%d", &n, &k);
     REP(i, 0, n) {C[i][1] = i; C[0][i] = 0;}
     REP(j, 2, k) REP(i, 1, n) C[i][j] = C[i - 1][j - 1] + C[i - 1][j];
-    REP(i, 0, n) {C[i][0] = 1; C[0][i] = 1;}
+    REP(i, 0, n) {C[0][i] = 1; C[i][0] = 1;}
     cin >> S;
     REP(i, 1, k) scanf("%d", &a[i]);
-
-    int kk = k - 1, nn = n - 1, x;
-        REP(i, 1, n) if (!used[i])
+ 
+    int kk = k - 1, nn = n - 1;
+        REP(i, 1, n)
         {
-            x = S[0];
-            x = C[nn][kk][0];
-            used[i] = 1;
             if (S > C[nn][kk]) S = S - C[nn][kk];
             else
             {
@@ -152,8 +149,7 @@ int main()
             if (kk == -1) break;
         }
     printf("\n");
-
-    memset(used, 0, sizeof(used));
+ 
     BigN P; P = 1; nn = n - 1; kk = k - 1;
     REP(i, 1, k)
     {
