@@ -21,94 +21,94 @@
 
 using namespace std;
 const int BASE = 10000;
-class BigNum
+struct BigN
 {
-public :
-    int n = 0;
-    int a[1001];
+    int a[2034], n;
 
-    int& operator [] (int i) {return a[i];}
-    const int operator [] (int i) const {return a[i];}
-
-    void resize (int N)
+    void resize (int x) {for (int i = 0; i < x; ++i) a[i] = 0; n = x;}
+    void trim() {while (n > 1 && a[n - 1] == 0) --n;};
+    void normalize()
     {
-        for (int i = n; i < N; ++i) a[i] = 0;
-        n = N;
-    }
-
-    void clear () {n = 0;}
-    void trim () {while (n > 1 && a[n - 1] == 0) --n;}
-    void normalize ()
-    {
-        for (int i = 1; i < n; ++i)
+        for (int i = 0; i < n - 1; ++i)
         {
-            a[i] += a[i - 1]/BASE;
-            a[i - 1] %= BASE;
-            if (a[i - 1] < 0)
+            a[i + 1] += a[i]/BASE;
+            a[i] %= BASE;
+            if (a[i] < 0)
             {
-                a[i - 1] += BASE;
-                --a[i];
+                a[i] += BASE;
+                --a[i + 1];
             }
         }
         trim();
     }
 
-    void operator = (int x)
-    {
-        a[0] = x;
-        n = 1;
-    }
+    int &operator [] (int i) {return a[i];}
+    const int operator [] (int i) const {return a[i];}
 
-    void operator += (const BigNum &A)
+    void operator = (int x) {a[0] = x; n = 1;}
+    void operator = (const BigN &A)
     {
-        resize(max(n, A.n) + 1);
-        for (int i = 0; i < A.n; ++i) a[i] += A[i];
-        normalize();
-    }
-
-    void operator -= (const BigNum &A)
-    {
-        for (int i = 0; i < A.n; ++i) a[i] -= A[i];
-        normalize();
+        n = A.n;
+        for (int i = 0; i < n; ++i) a[i] = A[i];
     }
 };
 
-
-BigNum operator * (const BigNum &A, const BigNum &B)
+BigN operator + (const BigN &A, const BigN &B)
 {
-    BigNum R;
-    R = 0;
-    R.resize(A.n + B.n);
-    for (int i = 0; i < A.n; ++i)
-        for (int j = 0; j < B.n; ++j) R[i + j] += A[i]*B[j];
+    BigN R; int k = max(A.n, B.n);
+    R.resize(k + 1);
+    for (int i = 0; i < k; ++i) R[i] = A[i] + B[i];
     R.normalize();
     return R;
 }
 
-BigNum operator * (const BigNum &A, int x)
+BigN operator - (const BigN &A, const BigN &B)
 {
-    BigNum R;
-    R = 0;
+    BigN R; int k = max(A.n, B.n);
+    R.resize(k);
+    for (int i = 0; i < k; ++i) R[i] = A[i] - B[i];
+    R.normalize();
+    return R;
+}
+
+BigN operator * (const BigN &A, const BigN &B)
+{
+    BigN R;
+    R.resize(A.n + B.n);
+    for (int i = 0; i < A.n; ++i)
+    for (int j = 0; j < B.n; ++j)
+    {
+        R[i + j] += A[i]*B[j];
+        R[i + j + 1] += R[i + j]/BASE;
+        R[i + j] %= BASE;
+    }
+    R.normalize();
+    return R;
+}
+
+BigN operator * (const BigN &A, int x)
+{
+    BigN R;
     R.resize(A.n + 1);
     for (int i = 0; i < A.n; ++i) R[i] = A[i]*x;
     R.normalize();
     return R;
 }
 
-ostream &operator << (ostream &cout, const BigNum &A)
+bool operator > (const BigN &A, const BigN &B)
 {
-    printf("%d", A[A.n - 1]);
-    for (int i = A.n - 2; i >= 0; --i) printf("%04d", A[i]);
-    return cout;
+    if (A.n != B.n) return (A.n > B.n);
+    for (int i = A.n - 1; i >= 0; --i) if (A[i] != B[i]) return (A[i] > B[i]);
+    return 0;
 }
 
-istream &operator >> (istream &cin, BigNum &A)
+istream &operator >> (istream &cin, BigN &A)
 {
     string s;
     cin >> s;
     int k = s.length(), x;
-    A.clear(); A.resize(k/4 + 1);
-    for (int i = 0; i < s.length(); ++i)
+    A.resize(k/4 + 1);
+    for (int i = 0; i < k; ++i)
     {
         x = (k - 1 - i)/4;
         A[x] = A[x]*10 + (s[i] - '0');
@@ -117,55 +117,56 @@ istream &operator >> (istream &cin, BigNum &A)
     return cin;
 }
 
-bool operator > (BigNum A, BigNum B)
+ostream &operator << (ostream &cout, const BigN &A)
 {
-    if (A.n != B.n) return (A.n > B.n);
-    for (int i = A.n - 1; i >= 0; --i) if (A[i] != B[i]) return (A[i] > B[i]);
-    return 0;
+    printf("%d", A[A.n - 1]);
+    for (int i = A.n - 2; i >= 0; --i) printf("%04d", A[i]);
+    return cout;
 }
 
-int n, k;
-BigNum f[101], S;
-bool b[101];
-
+int a[101], n, k;
+BigN f[101], S;
+bool used[101];
 int main()
 {
     //freopen("D:\\test.txt", "r", stdin);
     //freopen("D:\\test2.txt", "w", stdout);
     scanf("%d%d", &n, &k);
     cin >> S;
+    REP(i, 1, n) scanf("%d", &a[i]);
     f[0] = 1;
     REP(i, 1, k) f[i] = f[i - 1]*(n - k + i);
+    //REP(i, 1, k) cout << f[i] << ' '; return 0;
 
-    int d = k - 1, c = 0;
+    int nn = n - 1, kk = k - 1;
     while (1)
     {
-        REP(i, 1, n) if (!b[i])
+        REP(i, 1, n) if (!used[i])
         {
-            if (S > f[d]) S -= f[d];
+            if (S > f[kk]) S = S - f[kk];
             else
             {
                 printf("%d ", i);
-                b[i] = 1;
-                --d;
+                used[i] = 1;
+                --kk;
                 break;
             }
         }
-        if (d == -1) break;
+        if (kk == -1) break;
     }
     printf("\n");
-    memset(b, 0, sizeof(b));
 
-    int a[101]; S = 1; d = k;
-    REP(i, 1, n) scanf("%d", &a[i]);
-    REP(i, 1, n)
+    BigN P; P = 1;
+    nn = n; kk = k - 1;
+    memset(used, 0, sizeof(used));
+    REP(i, 1, k)
     {
-        REP(j, 1, n) if (!b[i])
+        REP(j, 1, n) if (!used[j])
         {
-            if (j == a[i]) {--d; break;}
-            S += f[d - 1];
+            if (a[i] == j) {--kk; used[j] = 1; break;}
+            else P = P + f[kk];
         }
-        if (d == 0) break;
+        if (kk == -1) break;
     }
-    cout << S;
+    cout << P;
 }
