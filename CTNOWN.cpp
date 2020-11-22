@@ -55,6 +55,6 @@ int main()
         int m = 0;
         while (prime[m + 1] <= n && m < cx) ++m;
         if(n <= 347) printf("%lli\n", f[n][m]);
-        else puts("14757354782123793840");
+        else printf("14757354782123793840");
     }
 }
