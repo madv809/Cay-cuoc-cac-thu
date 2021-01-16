@@ -62,3 +62,7 @@ int main()
     }
 }
  
+/*Công thức quy hoạch động là f[i][j] = max(f[u][v]) + 1 với a[i] == b[j] và mọi u < i, v < j, a[u] == b[v] và 2*a[u] <= a[i]
+.Tuy nhiên có một cách làm trí tuệ hơn là gọi f[j] mới = max(f[i][j] cũ). Để làm được điều này thì f[i][j] phải có tính chất : với
+mọi f[i][j] mà a[i] == b[j] thì tất cả các f[k][j] (k < i) f[k][j] <= f[i][j], tức là mỗi lần cập nhật f[j] mới thì giá trị của f[j] luôn
+>= giá trị cũ*/
