@@ -48,6 +48,9 @@ void print(BigInt a) {
     if (a.h == 0) printf("%llu", a.l);
     else printf("%llu%018llu", a.h, a.l);
 }
+
+// Muợn tạm quả số lớn kiểu cộng dồn trên vietcode=)))
+// Bài này code BigNum bình thường sẽ bị TLE
  
 BigInt f[2][mxn];
 pLL a[mxn];
