@@ -1,3 +1,6 @@
+/*tóm tắt : Cho bảng mxn (m, n <= 500), có những con corona trên đó, tìm đường đi từ S -> E sao cho khoảng cách
+nhỏ nhất giữa các ô trên đường đi và con corona là tối đa*/ 
+
 #include <iostream>
 #include <stdio.h>
 #include <algorithm>
