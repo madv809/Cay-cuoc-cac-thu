@@ -1,0 +1,95 @@
+#include <iostream>
+#include <stdio.h>
+#include <algorithm>
+#include <vector>
+#include <set>
+#include <cstring>
+#include <math.h>
+#include <iomanip>
+#include <queue>
+#include <map>
+#include <bitset>
+#include <unordered_map>
+
+#define LL long long
+#define ULL unsigned long long
+#define FOR(i, a, b) for (int i = (a); i < (b); ++i)
+#define REP(i, a, b) for (int i = (a); i <= (b); ++i)
+#define FORD(i, a, b) for (int i = (a) - 1; i >= (b); --i)
+#define REPD(i, a, b) for (int i = (a); i >= (b); --i)
+#define X first
+#define Y second
+#define pb(a) push_back(a);
+#define pii pair<int, int>
+#define pLi pair<LL, int>
+#define piL pair<int, LL>
+#define pLL pair<LL, LL>
+#define ar array
+#define ef else if
+#define lb lower_bound
+
+using namespace std;
+const int mxn = 1e6 + 5;
+const int MOD = 1e9 + 7;
+const int BASE = 10000;
+const int INF = 1e9 + 5;
+             //    0  1  2  3  4  5  6  7  8  9
+const int g[10] = { 6, 2, 5, 5, 4, 5, 6, 3, 7, 6 };
+const int gs[8] = { 0, 0, 1, 7, 4, 2, 0, 8 };
+const int gm[8] = { 0, 0, 1, 7, 4, 5, 9, 8 };
+int a[mxn], res[mxn], sum[mxn];
+
+int main()
+{
+    //freopen("D:\\test.txt", "r", stdin);
+    //freopen("D:\\test2.txt", "w", stdout);
+    string s;
+    cin >> s;
+    int n = s.length();
+    FOR(i, 0, n) a[i + 1] = (int)(s[i] - '0');
+
+    for (int i = n; i >= 1; --i) sum[i] = g[a[i]] + sum[i + 1];
+    if (gm[g[a[n]]] > a[n])
+    {
+        FOR(i, 1, n) cout << a[i];
+        REP(j, 0, 9) if ((g[j] == g[a[n]]) && j > a[n]) { cout << j; break; }
+        return 0;
+    }
+
+    int cmin = 0, cmax = 0;
+
+    for (int i = n - 1; i >= 1; --i)
+    {
+        cmin += 2; cmax += 7;
+        int x = i + 1;
+        for (int j = a[i] + 1; j <= 9; ++j)
+        {
+            int k = sum[x] + (g[a[i]] - g[j]);
+            if (k < cmin || k > cmax) continue;
+            int st = 1, ed = n - i;
+            REP(i, st, ed) { res[i] = 1; k -= 2; }
+
+            REP(i, st, ed)
+            {
+                if (k >= 4) { res[i] = 0; k -= 4; }
+                else { res[ed] = gs[k + 2]; k = 0; break; }
+            }
+
+            if (k > 0)
+            {
+                for (int i = ed; i >= st; --i)
+                {
+                    if (k > 0) { res[i] = 8; --k; }
+                    else break;
+                }
+            }
+
+            FOR(ii, 1, i) cout << a[ii];
+            cout << j;
+            REP(i, st, ed) cout << res[i];
+            return 0;
+        }
+    }
+
+    cout << "NO SOLUTION";
+}
