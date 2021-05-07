@@ -62,7 +62,16 @@ void suff()
         tmpRA[SA[0]] = r = 0;
 
         FOR(i, 1, n)
-            tmpRA[SA[i]] = (((RA[SA[i]] == RA[SA[i - 1]]) && (((SA[i] + k < n) ? RA[SA[i] + k] : -1) == ((SA[i - 1] + k < n) ? RA[SA[i - 1] + k] : -1))) ? r : ++r);
+        {
+            if (RA[SA[i]] == RA[SA[i - 1]])
+            {
+                int x = (SA[i] + k < n) ? RA[SA[i] + k] : -1;
+                int y = (SA[i - 1] + k < n) ? RA[SA[i - 1] + k] : -1;
+                if (x != y) ++r;
+            }
+            tmpRA[SA[i]] = r;
+        }
+
         FOR(i, 0, n)
             RA[i] = tmpRA[i];
 
