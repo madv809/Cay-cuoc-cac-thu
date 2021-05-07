@@ -76,7 +76,7 @@ int main()
     //freopen("D:\\test2.txt", "w", stdout);
     cin >> s; s += '$'; n = (int)(s.length());
     suff();
-    FOR(i, 1, n) cout << (SA[i] - 1) << endl;
+    FOR(i, 1, n) cout << SA[i] << endl;
 }
 
 
