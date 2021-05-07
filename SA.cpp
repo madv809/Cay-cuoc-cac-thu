@@ -40,9 +40,9 @@ string s;
 
 void counting_sort(int k)
 {
-    REP(i, 0, 300) c[i] = 0;
+    REP(i, 0, n) c[i] = 0;
     FOR(i, 0, n) ++c[(SA[i] + k < n) ? (RA[SA[i] + k]) : 0];
-    REP(i, 1, 300) c[i] += c[i - 1];
+    REP(i, 1, n) c[i] += c[i - 1];
 
     for (int i = n - 1; i >= 0; --i)
         tmpSA[--c[(SA[i] + k < n) ? RA[SA[i] + k] : 0]] = SA[i];
@@ -87,17 +87,3 @@ int main()
     suff();
     FOR(i, 1, n) cout << SA[i] << endl;
 }
-
-
-
-
-
-
-
-
-
-
-
-
-
-
