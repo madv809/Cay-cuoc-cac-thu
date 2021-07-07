@@ -37,8 +37,8 @@ using namespace std;
 const int mxn = 1e4 + 5;
 const int MOD = 1e9 + 7;
 const int BASE = 10000;
-const int INF = 1e9 + 7;
-const lb eps1 = 1e-16;
+const int INF = 1e9 + 8;
+const lb eps1 = 1e-15;
 const lb eps2 = 1e-10;
 int a[mxn], n, k, s, x, Vmi, Vmx, Vo;
 
@@ -62,13 +62,13 @@ signed main()
      } else tmp2 += dis2;
 
      lb l = 0, r = 1e17, mid, limit = (lb)(Vmx - Vmi);
-     while (l < r)
+     REP(i, 1, 1000)
      {
          mid = (l + r)/(lb)(2.0);
-         if (mx - mi <= limit*mid) r = mid;
+         if (mx - mi <= limit*mid - eps1) r = mid;
          else l = mid + eps1;
      }
-     cout << setprecision(17) << l << endl;
+     cout << setprecision(8) << fixed << l << endl;
      if (l == 0)
      {
          REP(i, 1, n) if (a[i] != -1)
@@ -77,11 +77,11 @@ signed main()
      }
 
      lb V = (lb)(Vmx) - mx/l;
-     cout << x << ' ' << setprecision(17) << V << endl;
+     cout << x << ' ' << setprecision(8) << fixed << V << endl;
      tmp1 = dis1; tmp2 = dis2;
      REP(i, x + 1, n) if (a[i] != -1)
      {
-         cout << i << ' ' << setprecision(17) << (V + (tmp1 - tmp2)/l) << endl;
+         cout << i << ' ' << setprecision(8) << fixed << (V + (tmp1 - tmp2)/l) << endl;
          tmp1 += dis1;
          tmp2 += dis2;
      } else tmp2 += dis2;
