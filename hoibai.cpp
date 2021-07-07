@@ -62,7 +62,7 @@ signed main()
      } else tmp2 += dis2;
 
      lb l = 0, r = 1e17, mid, limit = (lb)(Vmx - Vmi);
-     while (l < r - eps1)
+     while (l < r)
      {
          mid = (l + r)/(lb)(2.0);
          if (mx - mi <= limit*mid) r = mid;
