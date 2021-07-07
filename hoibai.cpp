@@ -77,11 +77,11 @@ signed main()
      }
 
      lb V = (lb)(Vmx) - mx/l;
-     cout << x << ' ' << V << endl;
+     cout << x << ' ' << setprecision(17) << V << endl;
      tmp1 = dis1; tmp2 = dis2;
      REP(i, x + 1, n) if (a[i] != -1)
      {
-         cout << i << ' ' << (V + (tmp1 - tmp2)/l) << endl;
+         cout << i << ' ' << setprecision(17) << (V + (tmp1 - tmp2)/l) << endl;
          tmp1 += dis1;
          tmp2 += dis2;
      } else tmp2 += dis2;
